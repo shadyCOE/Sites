@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+    <%= site_name %>: <%= yield :title %>
+  </title>
+  <link rel="shortcut icon" href="/assets/favicon.ico" />
+
+  <%= stylesheet_link_tag "normalize.css" %>
+  <%= stylesheet_link_tag "foundation.css" %>
+  <%= stylesheet_link_tag 'site/app.css' %>
+    <!--[if lt IE 8]
+  <%= stylesheet_link_tag 'ie.css', :media => 'screen, projection'%>
+  <![endif]-->
+  <!--[if lt IE 7]
+      <%= stylesheet_link_tag 'ie6.css', :media => 'screen, projection' %>
+  <![endif]-->
+  <%= csrf_meta_tag %>
+  <%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag "foundation" %>
+  <%= yield :head %>
+
+  <%= render 'shared/metadata' %>
+
+</head>
+
+<body >
+<div id='body_wrapper'>
+
+  <%= render :partial => '/shared/welcome_header'%>
+
+  <div class="row">
+    <% if notice || alert %>
+      <div class="flash_messages">
+        <%= raw "<div data-alert class='alert-box warning'> #{notice} <a href='' class='close'>&times;</a></div>"  if notice %>
+        <%= raw "<div data-alert class='alert-box alert'>#{alert} <a href='' class='close'>&times;</a></div>"     if alert %>
+      </div>
+    <% end %>
+  </div>
+
+    <div id='content_wrapper' class='row <%= "myaccount" if myaccount_tab %> '>
+      <%  if myaccount_tab %>
+        <h1 style='text-align:center;'><%= site_name %></h1>
+        <hr class="first_double_hr">
+        <hr class="second_double_hr">
+        <%= render :partial => '/shared/myaccount_subheader' %>
+      <% end %>
+      <%= yield %>
+    </div>
+    <div id='prefooter_wrapper'>&nbsp;</div>
+</div>
+  <%= render 'shared/google_analytics' unless @disable_ga %>
+  <%= render 'shared/main_footer' %>
+
+  <%= yield :bottom %>
+
+  <script>
+  jQuery(window).ready(
+    function() {
+      jQuery('.flash_notice').delay(6000).slideUp( 'slow');
+      jQuery('.flash_error').delay(6000).slideUp( 'slow');
+    }
+  );
+  </script>
+  <script>
+    $(document).foundation();
+  </script>
+</body>
+  <%= yield :below_body %>
+</html>
